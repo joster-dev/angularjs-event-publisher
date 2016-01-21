@@ -1,0 +1,154 @@
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+	.header {
+		padding: 0px 2.5% 10px 2.5% !important;
+		/*width: 95% !important;*/
+	}
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	.header {
+		padding: 0px 5% 10px 5% !important;
+		/*width: 90% !important;*/
+	}
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	.header {
+		padding: 0px 10% 10px 10% !important;
+	}
+}
+
+.nav, .pagination, .carousel, .panel-title a { 
+	cursor: pointer; 
+}
+
+.hide {
+	display: none !important;
+}
+
+.nav-button {
+	background-color: #91AA9D;
+}
+
+.active {
+	background-color: #3E606F;
+	color: #FFF;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.banner {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 65px;
+}
+
+.eBanner {
+	width: 100%;
+	height: 65px;
+	margin: 0px;
+	color: #FFF;
+}
+
+.eBanner>div {
+	height: 65px;
+}
+
+#eventImg {
+	max-width: none;
+	width: none;
+}
+
+body {
+	background-color: #CCC;
+}
+
+body>div>.header {
+	height: 90%;
+	width: 100%;
+	position: absolute;
+	overflow: auto;
+	display: inline-block;
+	padding: 0px 2.5% 10px 2.5%;
+}
+
+body>div>.footer {
+	margin-top: 0.5%;
+	height: 9.5%;
+	width: 100%;
+	position: absolute;
+	bottom: 0px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+}
+
+body>div>.footer>* {
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
+}
+
+#home>.header>.eventOverview {
+	margin-top: 1%;
+	padding: 0px 2%;
+	background-color: #FFF;
+	position: relative;
+}
+
+#home>.header>.eventOverview:nth-child(2n) {
+	background-color: #FFE;
+}
+
+#home>.header>.eventOverview>.eventHeader {
+	position: relative;
+	padding: 15px;
+	padding-bottom: 5px;
+}
+
+#home>.header>.eventOverview>.eventHeader>div {
+	float: left;
+	color: #FFF;
+}
+
+#filter>.header button {
+	width: 100%;
+	padding: 10px;
+}
+
+/*::-webkit-scrollbar {
+	display: none;
+}*/
+
+img {
+	float: right;
+	max-height: 80px;
+	max-width: 20%;
+	border: 4px solid #FFF;
+}
+
+textarea {
+	min-height: 200px;
+}
+
+fieldset {
+	margin-top: 10px;
+}
+
+p {
+	font-weight: bold;
+	font-size: 14px;
+	text-transform: uppercase;
+	position: relative;
+	margin: 0;
+	padding: 0;
+}

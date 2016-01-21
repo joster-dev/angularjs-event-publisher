@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html id="data-ng-app" data-ng-app="eventsApp">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>Event Application</title>
+
+	<script src="js/angular.min.js" type="text/javascript"></script>
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/default.css" rel="stylesheet">
+
+	<script src="js/jquery-2.0.2.min.js" type="text/javascript"></script>
+	<script src="js/ui-bootstrap-tpls-0.12.1.min.js" type="text/javascript"></script>
+	<script src="js/date.js" type="text/javascript"></script>
+	<script src="js/app.js" type="text/javascript"></script>
+</head>	
+<body 
+data-ng-controller="appCtrl"
+data-ng-init="viewHome()">
+
+	<div 
+	id="home"
+	data-ng-show="session.viewHome">
+		<div class="header">
+			<div
+			class="eventOverview"
+			data-ng-repeat="event in filteredEvents"
+			data-ng-click="viewEvent(event, false)">
+				<div class="banner" data-ng-style="{'background': event.groups.color}"></div>
+				<div class="row eventHeader">
+					<div>
+						<p>{{formatDate(event.date)}}</p>
+						<p>{{formatTime(event.startTime)}} - {{formatTime(event.endTime)}}</p>
+					</div>
+					<img data-ng-src="{{event.groups.image}}" alt="Logo">
+				</div>
+				<div class="row">
+					<div class="col-xs-8">
+						<h3>{{event.title}}</h3>
+					</div>
+					<div class="col-xs-4" style="text-align: right;">
+						<h4 style="color: #DCB751;">{{event.site.name}}
+						<h5>{{event.location}}</h5></h4>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="footer">
+			<button
+			data-ng-hide="session.currentEvents"
+			data-ng-click="filterEvents(true)">
+				Current Events
+			</button>
+			<button
+			data-ng-hide="session.pastEvents"
+			data-ng-click="filterEvents(true)">
+				Past Events
+			</button>
+			<button
+			data-ng-click="viewFilter()">
+				Menu
+			</button>
+		</div>
+	</div>
+
+	<!-- Filter -->
+
+	<div
+	id="filter"
+	data-ng-show="session.viewFilter">
+		<div class="header">
+			<accordion>
+				<accordion-group 
+				heading="Filter by Resource Group"
+				is-open="accordian.isFirstOpen">
+					<button
+					data-ng-repeat="group in groups"
+					data-ng-click="group.selected = group.selected ? false : true; filterEvents();"
+					data-ng-class="{active: group.selected}">
+						{{group.name}}
+					</button>
+				</accordion-group>
+				<accordion-group 
+				heading="Filter by Site">
+					<button
+					data-ng-repeat="site in sites"
+					data-ng-click="site.selected = site.selected ? false : true; filterEvents();"
+					data-ng-class="{active: site.selected}">
+						{{site.name}}
+					</button>
+				</accordion-group>
+			</accordion>
+			<button
+			data-ng-click="viewEvent(null, true)">
+				Create Event
+			</button>
+		</div>
+
+
+		<div class="footer">
+			<button
+			data-ng-click="viewHome()">
+				Return
+			</button>
+		</div>
+		
+	</div>
+
+	<!-- Event -->
+
+	<div 
+	id="event"
+	data-ng-show="session.viewEvent">
+		<form class="header">
+			<div class="eBanner row" data-ng-style="{'background': currentEvent.groups.color}">
+				<div class="col-xs-8"><h3>{{currentEvent.groups.name}}</h3></div>
+				<div class="col-xs-4">
+					<img id="eventImg" data-ng-src="{{currentEvent.groups.image}}" alt="Logo">
+				</div>
+			</div>
+			<fieldset class="form-group">
+				<label for="title">Title</label>
+				<input type="text" name="title" readonly
+				placeholder="Title"
+				class="readonly form-control"
+				data-ng-model="currentEvent.title">
+			</fieldset>
+			<fieldset class="row">
+				<div class="col-xs-12 col-sm-4 form-group">
+					<label for="date">Date</label>
+					<input type="date" name="date" readonly
+					class="readonly form-control"
+					data-ng-model="currentEvent.date">
+				</div>
+				<div class="col-xs-6 col-sm-4 form-group">
+					<label for="startTime">Start Time</label>
+					<input type="time" name="startTime" readonly
+					class="readonly form-control"
+					data-ng-model="currentEvent.startTime">
+				</div>
+				<div class="col-xs-6 col-sm-4 form-group">
+					<label for="endTime">End Time</label>
+					<input type="time" name="endTime" readonly
+					class="readonly form-control"
+					data-ng-model="currentEvent.endTime">
+				</div>
+			</fieldset>
+			<fieldset data-ng-show="session.editEvent">
+				<label for="group">Group</label>
+				<select name="group"
+				class="form-control"
+				data-ng-model="currentEvent.groups"
+				data-ng-options="group.name for group in groups">
+					<option value=""></option>
+				</select>
+			</fieldset>
+			<fieldset data-ng-show="session.editEvent">
+				<label for="site">Site</label>
+				<select name="site"
+				class="form-control"
+				data-ng-model="currentEvent.site"
+				data-ng-options="item.name for item in sites">
+				</select>
+			</fieldset>
+			<fieldset class="row">
+				<div class="col-xs-6">
+					<label for="address">Address</label>
+					<input type="text" name="address" readonly
+					class="form-control"
+					placeholder="Address"
+					data-ng-model="currentEvent.site.address">
+					<input type="text" name="location" readonly
+					class="form-control"
+					data-ng-model="currentEvent.site.address2">
+				</div>
+				<div class="col-xs-6">
+					<label for="location">Location</label>
+					<input type="text" name="location" readonly
+					class="readonly form-control"
+					placeholder="Room or Location"
+					data-ng-model="currentEvent.location">
+				</div>
+			</fieldset>
+			<fieldset class="row form-group">
+				<div class="col-xs-6">
+					<label for="hosts">Contact</label>
+					<div>
+						<input type="text" name="hosts" readonly
+						class="readonly form-control"
+						placeholder="Host Name"
+						data-ng-model="currentEvent.host.name">
+						<input type="text" name="hosts" readonly
+						class="readonly form-control"
+						placeholder="Host Email"
+						data-ng-model="currentEvent.host.email">
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<label for="speakers">Speaker</label>
+					<div>
+						<input type="text" name="speakers" readonly
+						class="readonly form-control"
+						placeholder="Speaker Name"
+						data-ng-model="currentEvent.speaker.name">
+						<input type="text" name="speakers" readonly
+						class="readonly form-control"
+						placeholder="Speaker Email"
+						data-ng-model="currentEvent.speaker.email">
+					</div>
+				</div>
+			</fieldset>
+			<fieldset>
+				<label for="details">Details</label>
+				<textarea name="details" style="resize: none" readonly
+				class="readonly form-control"
+				placeholder="Please provide additional details regarding your event"
+				data-ng-model="currentEvent.details"></textarea>
+			</fieldset>
+			<fieldset
+			data-ng-show="session.rateEvent">
+				<label>Did you attend this event?</label>
+				<div>
+					<label class="radio-inline">
+						<input type="radio" name="attendence" value="yes"
+						data-ng-model="currentEvent.attendence"> Yes
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="attendence" value="no"
+						data-ng-model="currentEvent.attendence"> No
+					</label>
+				</div>
+				<div data-ng-show="currentEvent.attendence == 'yes'">
+					<div>
+						<label for="rating">Rate this event</label><br/>
+						<rating name="rating" data-ng-model="currentEvent.rating" max="5" style="font-size: x-large"></rating>
+					</div>
+					<div>
+						<label for="feedback">Feedback</label>
+						<textarea style="resize: none" name="feedback"
+						class="form-control"
+						placeholder="Please provide any additional feedback"
+						data-ng-model="currentEvent.feedback"></textarea>
+					</div>
+					
+				</div>
+			</fieldset>
+		</form>
+		<div class="footer">
+			<button 
+			id="return"
+			data-ng-click="viewHome()">
+				Return
+			</button>
+			<button
+			id="join"
+			data-ng-hide="session.editEvent || session.pastEvents"
+			data-ng-click="attendEvent()">
+				Attend Event
+			</button>
+			<button
+			id="send"
+			data-ng-hide="session.editEvent || sessions.currentEvents || currentEvent.attendence === 'no'"
+			data-ng-click="sendFeedback()">
+				Send Feedback
+			</button>
+			<button
+			id="submit"
+			data-ng-show="session.editEvent"
+			data-ng-click="submitEvent()">
+				Sumbit Event
+			</button>
+		</div>
+	</div>
+
+
+</body>
+</html>
