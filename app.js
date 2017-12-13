@@ -1,6 +1,3 @@
-// Author  : Jacob Osterhout
-// Contact : JOster422@gmail.com
-
 'use strict';
 
 // Sample Objects
